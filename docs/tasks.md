@@ -9,18 +9,18 @@
 ## Steve
 
 * Skybox 
-* Building
-* Falaffel balls and plates
+* Building with Drexel Sign - this will involve texture mapping
+* Falafel balls and plates (can skip the plate, and just make falafel balls instead)
 
 ## Meghna
 
 * Food truck
 * Ground plane
-* Picking, start stop truck
-* Moving Truck
+* Picking - to start and stop truck
+* Animation - Moving Truck 
 
 
 
-## Option Task
+## Optional Task
 
 * Ground texture map
