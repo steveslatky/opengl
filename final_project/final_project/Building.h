@@ -10,12 +10,12 @@
 
 using namespace std;
 
-class Cube: public Drawable{
+class Building: public Drawable{
 
 
 public:
-	Cube();
-	~Cube();
+	Building();
+	~Building();
 	void draw(Camera, vector<Light>);
     void testCollision(vec4 rayOrigin, vec4 rayDirection);
     void setMaterial(vec4, vec4, vec4, float);
@@ -34,7 +34,7 @@ private:
 
     vec4 vertexLocations[6 * 2 * 3];
     vec3 vertexNormals[6 * 2 * 3];
-    vec2 vertexTextureLocations[6];
+    vec2 vertexTextureLocations[6 * 2 * 3];
     
     //uniform transformation matrix variable locations
     GLuint mmLoc, cmLoc, pmLoc;
@@ -52,11 +52,11 @@ private:
 	unsigned int index;
     
     
-    vec4 vertices[8] = { vec4(-0.5,-0.5,0.5,1),vec4(-0.5,0.5,0.5,1),vec4(0.5,0.5,0.5,1),vec4(0.5,-0.5,0.5,1),
-        vec4(-0.5,-0.5,-0.5,1),vec4(-0.5,0.5,-0.5,1),vec4(0.5,0.5,-0.5,1),vec4(0.5,-0.5,-0.5,1) };
-//    vec4 vertices[8] = { vec4(-.75,-0.75,0.75,1),vec4(-0.75,0.75,0.75,1),vec4(0.75,0.75,0.75,1),vec4(0.75,-0.75,0.75,1),
-//        vec4(-0.75,-0.75,-0.75,1),vec4(-0.75,0.75,-0.75,1),vec4(0.75,0.75,-0.75,1),vec4(0.75,-0.75,-0.75,1) };
-//
-    vec4 points[6];// * 2 * 3]; //6 faces, 2 triangles/face, 3 vertices per triangle
+//    vec4 vertices[8] = { vec4(-0.5,-0.5,0.5,1),vec4(-0.5,0.5,0.5,1),vec4(0.5,0.5,0.5,1),vec4(0.5,-0.5,0.5,1),
+//        vec4(-0.5,-0.5,-0.5,1),vec4(-0.5,0.5,-0.5,1),vec4(0.5,0.5,-0.5,1),vec4(0.5,-0.5,-0.5,1) };
+    vec4 vertices[8] = { vec4(-4.75,-0.75,4.75,1),vec4(-4.75,7.75,4.75,1),vec4(4.75,7.75,4.75,1),vec4(4.75,-0.75,4.75,1),
+        vec4(-4.75,-0.75,-4.75,1),vec4(-4.75,7.75,-4.75,1),vec4(4.75,7.75,-4.75,1),vec4(4.75,-0.75,-4.75,1) };
+
+    vec4 points[6 * 2 * 3]; //6 faces, 2 triangles/face, 3 vertices per triangle
 };
 #endif
