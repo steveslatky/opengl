@@ -27,6 +27,7 @@ public:
     
     void buildCube();
     
+//    Skybox::bool load_cube_map_side(GLuint texture, GLenum side_target, const char* file_name);
 private:
     
     
@@ -35,6 +36,22 @@ private:
     static const unsigned int numVertices = 8;
     vec4 vertexLocations[numVertices];
     int indexs[12 * 3];
+    
+    //uniform transformation matrix variable locations
+    GLuint mmLoc, cmLoc, pmLoc;
+    //uniform material variables
+    GLuint maLoc, msLoc, mdLoc, mAlphaLoc;
+    
+    //uniform light variables
+    GLuint enabled1, laLoc1, lsLoc1, ldLoc1, lpLoc1;
+    GLuint enabled2, laLoc2, lsLoc2, ldLoc2, lpLoc2;
+    
+    //materials
+    vec4 matDiffuse, matSpecular, matAmbient;
+    float shininess;
+    
+    //shader variable locations
+    GLuint diffuse_loc, spec_loc, ambient_loc, alpha_loc;
     
 
     

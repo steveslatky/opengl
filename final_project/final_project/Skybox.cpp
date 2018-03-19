@@ -20,6 +20,25 @@ Skybox::~Skybox(){
     glDeleteVertexArrays(1, &VAO);
 }
 
+//Skybox::bool load_cube_map_side(GLuint texture, GLenum side_target, const char* file_name) {
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
+//    
+//    int x, y, n;
+//    int force_channels = 4;
+//    unsigned char*  image_data = stbi_load(file_name, &x, &y, &n, force_channels);
+//    if (!image_data) {
+//        fprintf(stderr, "ERROR: could not load %s\n", file_name);
+//        return false;
+//    }
+//    // non-power-of-2 dimensions check
+//    if ((x & (x - 1)) != 0 || (y & (y - 1)) != 0) {
+//        fprintf(stderr,
+//                "WARNING: image %s is not power-of-2 dimensions\n",
+//                file_name);
+//    }
+//}
+
+
 void Skybox::buildCube() {
     vertexLocations[0] = vec4(-1, -1, 1, 1);
     vertexLocations[1] = vec4(-1, 1, 1, 1);
@@ -98,27 +117,30 @@ void Skybox::build() {
     glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     
     vector<unsigned char> image;
-    unsigned width, height;
+//    int *width = nullptr, *height = nullptr;
+////
+//    Drawable::ppmRead("images/skybox/ppm/skybox_top.png", width, height);
+//    glGenTextures(3 ,&texId);
+//
     
-    
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_top.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, width, height, 0, GL_RGBA ,GL_UNSIGNED_BYTE, image.data());
-    image.clear();
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_bottom.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    image.clear();
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_right.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    image.clear();
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_left.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    image.clear();
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_front.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    image.clear();
-    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_back.png");
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
-    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/ppm/skybox_top.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGBA, width, height, 0, GL_RGBA ,GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_bottom.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_right.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_left.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_front.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
+//    lodepng::decode(image, width, height, "/Users/stephenslatky/dev/classes/cs432/final_project/opengl/images/skybox/skybox_back.png");
+//    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.data());
+//    image.clear();
     
     
     
@@ -142,7 +164,7 @@ void Skybox::build() {
 
 
 
-void Skybox::draw(Camera camera, vector<Light>){
+void Skybox::draw(Camera camera, vector<Light> light){
     glBindVertexArray(VAO);
     glUseProgram(program);
     
@@ -156,6 +178,25 @@ void Skybox::draw(Camera camera, vector<Light>){
     GLuint view_loc = glGetUniformLocation(program, "view_matrix");
     mat4 viewMatrix = LookAt(vec4(0, 0, 0, 1), vec4(0, 0, 0, 1) + camera.geteye(), camera.getv());
     glUniformMatrix4fv(view_loc, 1, GL_TRUE, viewMatrix);
+    
+//    glUniform4fv(diffuse_loc, 1, diffuse);
+//    glUniform4fv(spec_loc, 1, specular);
+//    glUniform4fv(ambient_loc, 1, ambient);
+//    glUniform1f(alpha_loc, shine);
+//
+//    // spotlight
+//    glUniform1i(enabled1, lights[0].enabled);
+//    glUniform4fv(light_loc1, 1, lights[0].getPosition());
+//    glUniform4fv(ambient_loc1, 1, lights[0].getAmbient());
+//    glUniform4fv(diffuse_loc1, 1, lights[0].getDiffuse());
+//    glUniform4fv(specular_loc1, 1, lights[0].getSpecular());
+//
+//    // directional light
+//    glUniform1i(enabled2, lights[1].enabled);
+//    glUniform4fv(light_loc2, 1, lights[1].getPosition());
+//    glUniform4fv(ambient_loc2, 1, lights[1].getAmbient());
+//    glUniform4fv(diffuse_loc2, 1, lights[1].getDiffuse());
+//    glUniform4fv(specular_loc2, 1, lights[1].getSpecular());
     
     glEnable(GL_TEXTURE_CUBE_MAP);
     glActiveTexture(GL_TEXTURE0);
